@@ -1,0 +1,15 @@
+[Unit]
+Description=MCC HAT Server
+After=syslog.target
+
+[Service]
+Type=simple
+Restart=on-success
+RestartSec=10s
+User=kenichi
+Group=kenichi
+ExecStart=/usr/local/bin/mcc-hat-server -ivv
+
+[Install]
+WantedBy=multi-user.target
+
