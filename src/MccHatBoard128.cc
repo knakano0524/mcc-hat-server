@@ -17,46 +17,6 @@ MccHatBoard128::~MccHatBoard128()
   ;
 }
 
-int MccHatBoard128::EnableChannel(const uint8_t chan, const string opt)
-{
-  uint32_t opt2 = 0;
-  if (opt.find("noscale") != string::npos) opt2 |= OPTS_NOSCALEDATA;
-  if (opt.find("nocalib") != string::npos) opt2 |= OPTS_NOCALIBRATEDATA;
-  return EnableChannel(chan, opt2);
-}
-
-int MccHatBoard128::EnableChannelListed(const std::string list_chan, const string opt)
-{
-  vector<uint8_t> list_chan2;
-  if (SplitChannelList(list_chan, list_chan2) != 0) return 1;
-  for (auto it = list_chan2.begin(); it != list_chan2.end(); it++) EnableChannel(*it, opt);
-  return 0;
-}
-
-int MccHatBoard128::EnableChannel(const uint8_t chan, const uint32_t opt)
-{  
-  if (! IsValidChan(chan)) return 1;
-  m_enabled[chan] = true;
-  m_opts   [chan] = opt;
-  return 0;
-}
-
-int MccHatBoard128::EnableChannelListed(const std::string list_chan, const uint32_t opt)
-{
-  vector<uint8_t> list_chan2;
-  if (SplitChannelList(list_chan, list_chan2) != 0) return 1;
-  for (auto it = list_chan2.begin(); it != list_chan2.end(); it++) EnableChannel(*it, opt);
-  return 0;
-}
-
-int MccHatBoard128::DisableChannel(const uint8_t chan)
-{
-  if (! IsValidChan(chan)) return 1;
-  m_enabled[chan] = false;
-  m_opts   [chan] = 0;
-  return 0;
-}
-
 int MccHatBoard128::GetChannelOpts(const uint8_t chan, std::string& opts) const
 {
   if (! IsValidChan(chan)) {

@@ -133,21 +133,25 @@ int main(int argc, char** argv)
 	SendText(fd_cli, "  daqhats-read-eeproms\n");
 	SendText(fd_cli, "  init-boards\n");
 	SendText(fd_cli, "  disable-all\n");
-	SendText(fd_cli, "  enable-channel (board) (channel) [option]\n");
-	SendText(fd_cli, "  disable-channel (board) (channel)\n");
+	SendText(fd_cli, "  enable-channel (board) (channel_list)\n");
+	SendText(fd_cli, "  disable-channel (board) (channel_list)\n");
 	SendText(fd_cli, "  read [all]\n");
 	SendText(fd_cli, "\n");
+	SendText(fd_cli, "  Arguments:\n");
+	SendText(fd_cli, "    (board)       : 0, 1,,, 7\n");
+	SendText(fd_cli, "    (channel_list): all, 0, 1, 0-2, 1,3-6, etc\n");
+	SendText(fd_cli, "\n");
 	SendText(fd_cli, "Commands for HAT 128:\n");
-	SendText(fd_cli, "  get-channel-opts (board) (channel)\n");
-	SendText(fd_cli, "  set-channel-opts (board) (channel) (noscale|nocalib)\n");
+	SendText(fd_cli, "  get-channel-opts (board) (channel_list)\n");
+	SendText(fd_cli, "  set-channel-opts (board) (channel_list) (noscale|nocalib)\n");
 	SendText(fd_cli, "  get-input-mode (board)\n");
 	SendText(fd_cli, "  set-input-mode (board) (SE|DIFF)\n");
 	SendText(fd_cli, "  get-input-range (board)\n");
 	SendText(fd_cli, "  set-input-range (board) (10V|5V|2V|1V)\n");
 	SendText(fd_cli, "\n");
 	SendText(fd_cli, "Commands for HAT 134:\n");
-	SendText(fd_cli, "  get-tc-type (board) (channel)\n");
-	SendText(fd_cli, "  set-tc-type (board) (channel) (type)\n");
+	SendText(fd_cli, "  get-tc-type (board) (channel_list)\n");
+	SendText(fd_cli, "  set-tc-type (board) (channel_list) (type)\n");
       } else if (words[0] == "daqhats-version" || words[0] == "d-v") {
 	string output;
 	mhs->ExecCommand("daqhats_version", output);	
@@ -162,17 +166,14 @@ int main(int argc, char** argv)
 	SendText(fd_cli, output+"\n");
       } else if (words[0] == "init-boards" || words[0] == "i-b") {
 	SendStatus(fd_cli, mhs->InitBoards());
-//      } else if (words[0] == "disable-all" || words[0] == "d-a") {
-//	mhs->DisableAll();
       } else if (words[0] == "enable-channel" || words[0] == "e-c") {
 	int   board = atoi(words[1].c_str());
 	string chan =      words[2]         ;
-	string opt  = words.size() >= 4  ?  words[3]  :  "";
 	if (! mhs->IsReady(board, &cout)) continue;
-	SendStatus(fd_cli, mhs->GetBoard(board)->EnableChannelListed(chan, opt));
+	SendStatus(fd_cli, mhs->GetBoard(board)->EnableChannel(chan));
       } else if (words[0] == "disable-channel" || words[0] == "d-c") {
-	int board = atoi(words[1].c_str());
-	int chan  = atoi(words[2].c_str());
+	int   board = atoi(words[1].c_str());
+	string chan =      words[2]         ;
 	if (! mhs->IsReady(board, &cout)) continue;
 	SendStatus(fd_cli, mhs->GetBoard(board)->DisableChannel(chan));
       } else if (words[0] == "get-channel-opts" || words[0] == "g-c-o") {

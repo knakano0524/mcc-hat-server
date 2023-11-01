@@ -17,14 +17,6 @@ public:
   int  Close()  { return mcc128_close(m_addr) == RESULT_SUCCESS; }
   bool IsOpen() { return mcc128_is_open(m_addr) == 1; }
 
-  int EnableChannel(const uint8_t chan, const std::string opt="");
-  int EnableChannelListed(const std::string list_chan, const std::string opt="");
-
-  int EnableChannel(const uint8_t chan, const uint32_t opt); // noscale,nocalib
-  int EnableChannelListed(const std::string list_chan, const uint32_t opt);
-
-  int DisableChannel(const uint8_t chan);
-
   int GetChannelOpts(const uint8_t chan, std::string& opts) const;
   int SetChannelOpts(const uint8_t chan, const std::string opts);
   int GetChannelOpts(const std::string chan, std::string& opts) const;

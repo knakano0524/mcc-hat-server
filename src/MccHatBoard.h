@@ -24,25 +24,22 @@ public:
   
   virtual uint8_t GetNumChan() const { return 0; }
   bool IsValidChan(const uint8_t chan) const { return 0 <= chan && chan < GetNumChan(); }
-  
+  int EnableChannel (const uint8_t     chan);
+  int EnableChannel (const std::string chan);
+  int DisableChannel(const uint8_t     chan);
+  int DisableChannel(const std::string chan);
+    
   virtual int Open()  { return 99; }
   virtual int Close() { return 99; }
   virtual bool IsOpen() const { return false; }
   
-  virtual int EnableChannel(const uint8_t chan, const std::string opt) { return 99; }
-  virtual int EnableChannelListed(const std::string list_chan, const std::string opt) { return 99; }
-
   /// HAT 134
-  virtual int EnableChannel(const uint8_t chan, const uint8_t tc_type) { return 99; }
-  virtual int EnableChannelListed(const std::string list_chan, const uint8_t tc_type) { return 99; }
   virtual int GetTcType(const uint8_t chan, std::string& type) const { return 99; }
   virtual int SetTcType(const uint8_t chan, const std::string type) { return 99; }
   virtual int GetTcType(const std::string chan, std::string& type) const { return 99; }
   virtual int SetTcType(const std::string chan, const std::string type) { return 99; }
 
   /// HAT 128
-  virtual int EnableChannel(const uint8_t chan, const uint32_t opt=0) { return 99; }
-  virtual int EnableChannelListed(const std::string list_chan, const uint32_t opt=0) { return 99; }
   virtual int GetChannelOpts(const uint8_t chan, std::string& opts) const { return 99; }
   virtual int SetChannelOpts(const uint8_t chan, const std::string opts) { return 99; }
   virtual int GetChannelOpts(const std::string chan, std::string& opts) const { return 99; }
@@ -51,8 +48,6 @@ public:
   virtual int SetInputMode(const std::string mode) { return 99;}
   virtual int GetInputRange(std::string& range) const { return 99;}
   virtual int SetInputRange(const std::string range) { return 99;}
-
-  virtual int DisableChannel(const uint8_t chan) { return 99; }
 
   virtual int ReadChannel(const uint8_t chan, double& value) { return 99; }
   virtual int ReadEnabled(std::map<uint8_t, double>& values) { return 99; }
