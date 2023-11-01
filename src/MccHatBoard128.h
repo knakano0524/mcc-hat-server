@@ -24,8 +24,14 @@ public:
   int EnableChannelListed(const std::string list_chan, const uint32_t opt);
 
   int DisableChannel(const uint8_t chan);
-  
+
+  int GetChannelOpts(const uint8_t chan, std::string& opts) const;
+  int SetChannelOpts(const uint8_t chan, const std::string opts);
+  int GetChannelOpts(const std::string chan, std::string& opts) const;
+  int SetChannelOpts(const std::string chan, const std::string opts);
+  int GetInputMode(std::string& mode) const; // SE, DIFF
   int SetInputMode(const std::string mode); // SE, DIFF
+  int GetInputRange(std::string& range) const; // 10V, 5V, 2V, 1V
   int SetInputRange(const std::string range); // 10V, 5V, 2V, 1V
   
   int ReadChannel(const uint8_t chan, double& value);

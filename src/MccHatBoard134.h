@@ -12,6 +12,9 @@ public:
   MccHatBoard134(const uint8_t addr);
   virtual ~MccHatBoard134();
 
+  uint8_t TcType(const std::string type) const;
+  std::string TcType(const uint8_t type) const;
+
   uint8_t GetNumChan() const { return N_CHAN; }
 
   int  Open()   { return mcc134_open (m_addr) == RESULT_SUCCESS; }
@@ -25,6 +28,11 @@ public:
   int EnableChannelListed(const std::string list_chan, const uint8_t tc_type);
   
   int DisableChannel(const uint8_t chan);
+
+  int GetTcType(const uint8_t chan, std::string& type) const;
+  int SetTcType(const uint8_t chan, const std::string type);
+  int GetTcType(const std::string chan, std::string& type) const;
+  int SetTcType(const std::string chan, const std::string type);
   
   int ReadChannel(const uint8_t chan, double& value);
   int ReadEnabled(std::map<uint8_t, double>& values);

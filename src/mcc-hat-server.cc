@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 	SendStatus(fd_cli, 0);
 	break;
       } else if (words[0] == "help" || words[0] == "h") {
-	SendText(fd_cli, "Usage:\n");
+	SendText(fd_cli, "Global Commands:\n");
 	SendText(fd_cli, "  quit\n");
 	SendText(fd_cli, "  daqhats-version\n");
 	SendText(fd_cli, "  daqhats-list-boards\n");
@@ -136,6 +136,18 @@ int main(int argc, char** argv)
 	SendText(fd_cli, "  enable-channel (board) (channel) [option]\n");
 	SendText(fd_cli, "  disable-channel (board) (channel)\n");
 	SendText(fd_cli, "  read [all]\n");
+	SendText(fd_cli, "\n");
+	SendText(fd_cli, "Commands for HAT 128:\n");
+	SendText(fd_cli, "  get-channel-opts (board) (channel)\n");
+	SendText(fd_cli, "  set-channel-opts (board) (channel) (noscale|nocalib)\n");
+	SendText(fd_cli, "  get-input-mode (board)\n");
+	SendText(fd_cli, "  set-input-mode (board) (SE|DIFF)\n");
+	SendText(fd_cli, "  get-input-range (board)\n");
+	SendText(fd_cli, "  set-input-range (board) (10V|5V|2V|1V)\n");
+	SendText(fd_cli, "\n");
+	SendText(fd_cli, "Commands for HAT 134:\n");
+	SendText(fd_cli, "  get-tc-type (board) (channel)\n");
+	SendText(fd_cli, "  set-tc-type (board) (channel) (type)\n");
       } else if (words[0] == "daqhats-version" || words[0] == "d-v") {
 	string output;
 	mhs->ExecCommand("daqhats_version", output);	
@@ -156,27 +168,61 @@ int main(int argc, char** argv)
 	int   board = atoi(words[1].c_str());
 	string chan =      words[2]         ;
 	string opt  = words.size() >= 4  ?  words[3]  :  "";
-	if (! mhs->IsValidBoard(board)) {
-	  cout << "Invalid board, " << board << "." << endl;
-	  continue;
-	}
-//	if (! mhs->GetBoard(board)) {
-//	  mhs->EnableBoard(board);
-//	  mhs->GetBoard(0)->Open();
-//	}
+	if (! mhs->IsReady(board, &cout)) continue;
 	SendStatus(fd_cli, mhs->GetBoard(board)->EnableChannelListed(chan, opt));
       } else if (words[0] == "disable-channel" || words[0] == "d-c") {
 	int board = atoi(words[1].c_str());
 	int chan  = atoi(words[2].c_str());
-	if (! mhs->IsValidBoard(board)) {
-	  cout << "Invalid board, " << board << "." << endl;
-	  continue;
-	}
-	if (! mhs->GetBoard(board)) {
-	  cout << "Board is not enabled." << endl;
-	  continue;
-	}
+	if (! mhs->IsReady(board, &cout)) continue;
 	SendStatus(fd_cli, mhs->GetBoard(board)->DisableChannel(chan));
+      } else if (words[0] == "get-channel-opts" || words[0] == "g-c-o") {
+	int   board = atoi(words[1].c_str());
+	string chan =      words[2].c_str() ;	
+	string mode;
+	if (! mhs->IsReady(board, &cout)) mode = "NG";
+	else mhs->GetBoard(board)->GetChannelOpts(chan, mode);
+	SendText(fd_cli, mode+"\n");
+      } else if (words[0] == "set-channel-opts" || words[0] == "s-c-o") {
+	int   board = atoi(words[1].c_str());
+	string chan =      words[2].c_str() ;	
+	string mode =      words[3].c_str() ;
+	if (! mhs->IsReady(board, &cout)) continue;
+	SendStatus(fd_cli, mhs->GetBoard(board)->SetChannelOpts(chan, mode));
+      } else if (words[0] == "get-input-mode" || words[0] == "g-i-m") {
+	int board = atoi(words[1].c_str());
+	string mode;
+	if (! mhs->IsReady(board, &cout)) mode = "NG";
+	else mhs->GetBoard(board)->GetInputMode(mode);
+	SendText(fd_cli, mode+"\n");
+      } else if (words[0] == "set-input-mode" || words[0] == "s-i-m") {
+	int   board = atoi(words[1].c_str());
+	string mode =      words[2].c_str() ;
+	if (! mhs->IsReady(board, &cout)) continue;
+	SendStatus(fd_cli, mhs->GetBoard(board)->SetInputMode(mode));
+      } else if (words[0] == "get-input-range" || words[0] == "g-i-r") {
+	int board = atoi(words[1].c_str());
+	string range;
+	if (! mhs->IsReady(board, &cout)) range = "NG";
+	else mhs->GetBoard(board)->GetInputRange(range);
+	SendText(fd_cli, range+"\n");
+      } else if (words[0] == "set-input-range" || words[0] == "s-i-r") {
+	int    board = atoi(words[1].c_str());
+	string range =      words[2].c_str() ;
+	if (! mhs->IsReady(board, &cout)) continue;
+	SendStatus(fd_cli, mhs->GetBoard(board)->SetInputRange(range));
+      } else if (words[0] == "get-tc-type" || words[0] == "g-t-t") {
+	int   board = atoi(words[1].c_str());
+	string chan =      words[2].c_str() ;
+	string type;
+	if (! mhs->IsReady(board, &cout)) type = "NG";
+	else mhs->GetBoard(board)->GetTcType(chan, type);
+	SendText(fd_cli, type+"\n");
+      } else if (words[0] == "set-tc-type" || words[0] == "s-t-t") {
+	int    board = atoi(words[1].c_str());
+	string chan =       words[2].c_str() ;
+	string type =       words[3].c_str() ;
+	if (! mhs->IsReady(board, &cout)) continue;
+	SendStatus(fd_cli, mhs->GetBoard(board)->SetTcType(chan, type));
       } else if (words[0] == "read" || words[0] == "r") {
 	ostringstream oss;
 	if (words.size() > 1 && (words[1] == "all" || words[1] == "a") ) {

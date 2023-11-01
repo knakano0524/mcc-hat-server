@@ -29,6 +29,10 @@ sudo systemctl status mcc-hat-server
 To be written.
 
 
+## Reference
+
+- [MCC DAQ HAT Library documentation](https://mccdaq.github.io/daqhats/)
+
 ## Contact
 
 Kenichi Naknao <knakano0524@gmail.com>

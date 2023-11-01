@@ -18,7 +18,7 @@ MccHatBoard::~MccHatBoard()
   ;
 }
 
-int MccHatBoard::SplitChannelList(const std::string list_chan_str, std::vector<uint8_t>& list_chan)
+int MccHatBoard::SplitChannelList(const std::string list_chan_str, std::vector<uint8_t>& list_chan) const
 {
   vector<string> list_ele; // "1", "2-3", etc.
   size_t last = 0, next;
@@ -32,8 +32,8 @@ int MccHatBoard::SplitChannelList(const std::string list_chan_str, std::vector<u
   for (auto it = list_ele.begin(); it != list_ele.end();it++) {
     size_t pos = it->find("-");
     if (pos != string::npos) {
-      int ch0 = atoi( it->substr(0, pos-1).c_str() );
-      int ch1 = atoi( it->substr(pos+1   ).c_str() );
+      int ch0 = atoi( it->substr(0, pos).c_str() );
+      int ch1 = atoi( it->substr(pos+1 ).c_str() );
       for (int ch = ch0; ch <= ch1; ch++) list_chan.push_back(ch);
     } else {
       list_chan.push_back(atoi(it->c_str()));

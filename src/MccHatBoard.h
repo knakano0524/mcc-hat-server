@@ -25,28 +25,40 @@ public:
   virtual uint8_t GetNumChan() const { return 0; }
   bool IsValidChan(const uint8_t chan) const { return 0 <= chan && chan < GetNumChan(); }
   
-  virtual int Open()  { return 1; }
-  virtual int Close() { return 1; }
+  virtual int Open()  { return 99; }
+  virtual int Close() { return 99; }
   virtual bool IsOpen() const { return false; }
   
-  virtual int EnableChannel(const uint8_t chan, const std::string opt) { return 1; }
-  virtual int EnableChannelListed(const std::string list_chan, const std::string opt) { return 1; }
+  virtual int EnableChannel(const uint8_t chan, const std::string opt) { return 99; }
+  virtual int EnableChannelListed(const std::string list_chan, const std::string opt) { return 99; }
 
   /// HAT 134
-  virtual int EnableChannel(const uint8_t chan, const uint8_t tc_type) { return 1; }
-  virtual int EnableChannelListed(const std::string list_chan, const uint8_t tc_type) { return 1; }
+  virtual int EnableChannel(const uint8_t chan, const uint8_t tc_type) { return 99; }
+  virtual int EnableChannelListed(const std::string list_chan, const uint8_t tc_type) { return 99; }
+  virtual int GetTcType(const uint8_t chan, std::string& type) const { return 99; }
+  virtual int SetTcType(const uint8_t chan, const std::string type) { return 99; }
+  virtual int GetTcType(const std::string chan, std::string& type) const { return 99; }
+  virtual int SetTcType(const std::string chan, const std::string type) { return 99; }
 
   /// HAT 128
-  virtual int EnableChannel(const uint8_t chan, const uint32_t opt=0) { return 1; }
-  virtual int EnableChannelListed(const std::string list_chan, const uint32_t opt=0) { return 1; }
+  virtual int EnableChannel(const uint8_t chan, const uint32_t opt=0) { return 99; }
+  virtual int EnableChannelListed(const std::string list_chan, const uint32_t opt=0) { return 99; }
+  virtual int GetChannelOpts(const uint8_t chan, std::string& opts) const { return 99; }
+  virtual int SetChannelOpts(const uint8_t chan, const std::string opts) { return 99; }
+  virtual int GetChannelOpts(const std::string chan, std::string& opts) const { return 99; }
+  virtual int SetChannelOpts(const std::string chan, const std::string opts) { return 99; }
+  virtual int GetInputMode(std::string& mode) const { return 99;}
+  virtual int SetInputMode(const std::string mode) { return 99;}
+  virtual int GetInputRange(std::string& range) const { return 99;}
+  virtual int SetInputRange(const std::string range) { return 99;}
 
-  virtual int DisableChannel(const uint8_t chan) { return 1; }
+  virtual int DisableChannel(const uint8_t chan) { return 99; }
 
-  virtual int ReadChannel(const uint8_t chan, double& value) { return 1; }
-  virtual int ReadEnabled(std::map<uint8_t, double>& values) { return 1; }
-  virtual int ReadAll(std::vector<double>& values) { return 1; }
+  virtual int ReadChannel(const uint8_t chan, double& value) { return 99; }
+  virtual int ReadEnabled(std::map<uint8_t, double>& values) { return 99; }
+  virtual int ReadAll(std::vector<double>& values) { return 99; }
 
-  int SplitChannelList(const std::string list_chan_str, std::vector<uint8_t>& list_chan);
+  int SplitChannelList(const std::string list_chan_str, std::vector<uint8_t>& list_chan) const;
 };
 
 #endif // __MCC_HAT_BOARD_H__

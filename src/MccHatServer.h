@@ -37,6 +37,8 @@ class MccHatServer {
   //int DisableAll();
   MccHatBoard* GetBoard(const unsigned int board);
 
+  bool IsReady(const unsigned int board, std::ostream* os=0);
+  
   int ExecCommand(const std::string command, std::string& output);
 };
 

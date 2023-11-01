@@ -120,6 +120,19 @@ MccHatBoard* MccHatServer::GetBoard(const unsigned int board)
   return m_list_board[board];
 }
 
+bool MccHatServer::IsReady(const unsigned int board, std::ostream* os)
+{
+  if (! IsValidBoard(board)) {
+    if (os) *os << "Invalid board, " << board << "." << endl;
+    return false;
+  }
+  if (! GetBoard(board)) {
+    if (os) *os << "Board is not enabled." << endl;
+    return false;
+  }
+  return true;
+}
+
 int MccHatServer::ExecCommand(const std::string command, std::string& output)
 {
   FILE* fp = popen(command.c_str(), "r");

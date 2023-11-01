@@ -57,6 +57,69 @@ int MccHatBoard128::DisableChannel(const uint8_t chan)
   return 0;
 }
 
+int MccHatBoard128::GetChannelOpts(const uint8_t chan, std::string& opts) const
+{
+  if (! IsValidChan(chan)) {
+    opts = "NG";
+    return 98;
+  }
+  if (m_opts[chan] == 0)   opts = "None";
+  else {
+    opts = "";
+    if (m_opts[chan] & OPTS_NOSCALEDATA    ) opts += "NoScale";
+    if (m_opts[chan] & OPTS_NOCALIBRATEDATA) opts += "NoCalib";
+  }
+  return 0;
+}
+
+int MccHatBoard128::SetChannelOpts(const uint8_t chan, const std::string opts)
+{
+  cout << "Z " << (int)m_addr << " " << (int)chan << " " << opts << endl;
+  if (! IsValidChan(chan)) return 98;
+  m_opts[chan] = 0;
+  if (opts.find("noscale") != string::npos) m_opts[chan] |= OPTS_NOSCALEDATA;
+  if (opts.find("nocalib") != string::npos) m_opts[chan] |= OPTS_NOCALIBRATEDATA;
+  return 0;
+}
+
+int MccHatBoard128::GetChannelOpts(const std::string chan, std::string& opts) const
+{
+  opts = "";
+  vector<uint8_t> list_chan;
+  if (SplitChannelList(chan, list_chan) != 0) return 98;
+  int ret = 0;
+  for (auto it = list_chan.begin(); it != list_chan.end(); it++) {
+    if (it != list_chan.begin()) opts += "\t";
+    string val;
+    ret += GetChannelOpts(*it, val);
+    opts += val;
+  }
+  return ret;
+}
+
+int MccHatBoard128::SetChannelOpts(const std::string chan, const std::string opts)
+{
+  vector<uint8_t> list_chan;
+  if (SplitChannelList(chan, list_chan) != 0) return 98;
+  int ret = 0;
+  for (auto it = list_chan.begin(); it != list_chan.end(); it++) {
+    ret += SetChannelOpts(*it, opts);
+  }
+  return ret;
+}
+
+int MccHatBoard128::GetInputMode(std::string& mode) const
+{
+  uint8_t mode2;
+  int ret = mcc128_a_in_mode_read(m_addr, &mode2);
+  if (ret == RESULT_SUCCESS) {
+    if      (mode2 == A_IN_MODE_SE  ) mode = "SE"  ;
+    else if (mode2 == A_IN_MODE_DIFF) mode = "DIFF";
+    else                              mode = "??";
+  } else mode = "NG";
+  return ret;
+}
+
 int MccHatBoard128::SetInputMode(const std::string mode)
 {
   uint8_t mode2;
@@ -64,6 +127,20 @@ int MccHatBoard128::SetInputMode(const std::string mode)
   else if (mode == "DIFF") mode2 = A_IN_MODE_DIFF;
   else return 1;
   return mcc128_a_in_mode_write(m_addr, mode2);
+}
+
+int MccHatBoard128::GetInputRange(std::string& range) const
+{
+  uint8_t range2;
+  int ret = mcc128_a_in_range_read(m_addr, &range2);
+  if (ret == RESULT_SUCCESS) {
+    if      (range2 == A_IN_RANGE_BIP_10V) range = "10V";
+    else if (range2 == A_IN_RANGE_BIP_5V ) range =  "5V";
+    else if (range2 == A_IN_RANGE_BIP_2V ) range =  "2V";
+    else if (range2 == A_IN_RANGE_BIP_1V ) range =  "1V";
+    else                                   range =  "??";
+  } else range = "NG";
+  return ret;
 }
 
 int MccHatBoard128::SetInputRange(const std::string range)
