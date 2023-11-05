@@ -105,6 +105,7 @@ int MccHatBoard134::ReadEnabled(std::map<uint8_t, double>& values)
   int ret = 0;
   values.clear();
   for (uint8_t chan = 0; chan < N_CHAN; chan++) {
+    if (! m_enabled[chan]) continue;
     double value;
     ret += ReadChannel(chan, value);
     values[chan] = value;

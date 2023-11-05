@@ -132,7 +132,6 @@ int main(int argc, char** argv)
 	SendText(fd_cli, "  daqhats-list-boards\n");
 	SendText(fd_cli, "  daqhats-read-eeproms\n");
 	SendText(fd_cli, "  init-boards\n");
-	SendText(fd_cli, "  disable-all\n");
 	SendText(fd_cli, "  enable-channel (board) (channel_list)\n");
 	SendText(fd_cli, "  disable-channel (board) (channel_list)\n");
 	SendText(fd_cli, "  read [all]\n");
