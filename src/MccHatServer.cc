@@ -4,6 +4,7 @@
 //#include <iomanip>
 //#include <fstream>
 //#include <sstream>
+#include "MccHatBoard118.h"
 #include "MccHatBoard128.h"
 #include "MccHatBoard134.h"
 #include "MccHatServer.h"
@@ -54,8 +55,7 @@ int MccHatServer::InitBoards(const bool close_first)
     string  name = m_hat_info_list[bd].product_name;
     switch (id) {
     case HAT_ID_MCC_118:
-      cout << "Unsupported ID (" << id << ").  Skipped." << endl;
-      //m_list_board[addr] = new MccHatBoard118(addr);
+      m_list_board[addr] = new MccHatBoard118(addr);
       break;
     case HAT_ID_MCC_128:
       m_list_board[addr] = new MccHatBoard128(addr);
@@ -91,28 +91,6 @@ int MccHatServer::CloseBoards()
   }
   return 0;
 }
-
-//int MccHatServer::EnableBoard(const unsigned int board)
-//{
-//  if (! IsValidBoard(board)) return 1;
-//  if (m_list_board[board]) return 2;
-//  m_list_board[board] = new MccHatBoard(board);
-//  return 0;
-//}
-//
-//int MccHatServer::DisableBoard(const unsigned int board)
-//{
-//  if (! IsValidBoard(board)) return 1;
-//  if (m_list_board[board]) delete m_list_board[board];
-//  return 0;
-//}
-//
-//int MccHatServer::DisableAll()
-//{
-//  int ret = 0;
-//  for (int bd = 0; bd < N_BOARD; bd++) ret += DisableBoard(bd);
-//  return ret;
-//}
 
 MccHatBoard* MccHatServer::GetBoard(const unsigned int board)
 {

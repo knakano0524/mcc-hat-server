@@ -9,7 +9,7 @@ using namespace std;
 MccHatBoard128::MccHatBoard128(const uint8_t addr)
   : MccHatBoard(addr)
 {
-  memset(m_opts   , 0, sizeof(m_opts   ));
+  memset(m_opts, 0, sizeof(m_opts));
 }
 
 MccHatBoard128::~MccHatBoard128()
@@ -23,7 +23,7 @@ int MccHatBoard128::GetChannelOpts(const uint8_t chan, std::string& opts) const
     opts = "NG";
     return 98;
   }
-  if (m_opts[chan] == 0)   opts = "None";
+  if (m_opts[chan] == 0) opts = "None";
   else {
     opts = "";
     if (m_opts[chan] & OPTS_NOSCALEDATA    ) opts += "NoScale";
@@ -34,7 +34,6 @@ int MccHatBoard128::GetChannelOpts(const uint8_t chan, std::string& opts) const
 
 int MccHatBoard128::SetChannelOpts(const uint8_t chan, const std::string opts)
 {
-  cout << "Z " << (int)m_addr << " " << (int)chan << " " << opts << endl;
   if (! IsValidChan(chan)) return 98;
   m_opts[chan] = 0;
   if (opts.find("noscale") != string::npos) m_opts[chan] |= OPTS_NOSCALEDATA;

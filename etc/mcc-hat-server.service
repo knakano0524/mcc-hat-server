@@ -6,9 +6,9 @@ After=syslog.target
 Type=simple
 Restart=on-success
 RestartSec=10s
-User=kenichi
-Group=kenichi
-ExecStart=/usr/local/bin/mcc-hat-server -ivv
+User=daq
+Group=daq
+ExecStart=/usr/local/bin/mcc-hat-server -iv
 
 [Install]
 WantedBy=multi-user.target

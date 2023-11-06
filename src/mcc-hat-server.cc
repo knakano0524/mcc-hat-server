@@ -51,14 +51,7 @@ int main(int argc, char** argv)
 	 << "  Init board   = " << init_board << "\n"
 	 << "  Verbosity    = " << verb << endl;
   }
-  
   //int n_par = argc - optind;
-  //AssureNumPar(n_par, 1, "a command", "The 'help' command shows you all available commands.");
-  //string comm = argv[optind];
-  //if (comm == "help" || comm == "-h" || comm == "--help") {
-  //  PrintHelp();
-  //  return 0;
-  //}
 
   MccHatServer* mhs = MccHatServer::instance();
   //mhs->Verbosity(verb);
@@ -139,6 +132,10 @@ int main(int argc, char** argv)
 	SendText(fd_cli, "  Arguments:\n");
 	SendText(fd_cli, "    (board)       : 0, 1,,, 7\n");
 	SendText(fd_cli, "    (channel_list): all, 0, 1, 0-2, 1,3-6, etc\n");
+	SendText(fd_cli, "\n");
+	SendText(fd_cli, "Commands for HAT 118:\n");
+	SendText(fd_cli, "  get-channel-opts (board) (channel_list)\n");
+	SendText(fd_cli, "  set-channel-opts (board) (channel_list) (noscale|nocalib)\n");
 	SendText(fd_cli, "\n");
 	SendText(fd_cli, "Commands for HAT 128:\n");
 	SendText(fd_cli, "  get-channel-opts (board) (channel_list)\n");
@@ -258,22 +255,6 @@ int main(int argc, char** argv)
     close(fd_cli);
   } 
   close(fd_svr);
-    
-//  if (comm == "ds-list") {
-//    vector<string> list_ds;
-//    svr->ListDataset(&list_ds);
-//    for (auto it = list_ds.begin(); it != list_ds.end(); it++) cout << *it << endl;
-//
-//  } else if (comm == "ds-exist") {
-//    AssureNumPar(n_par, 2, "a dataset name");
-//    cout << svr->DatasetExists(argv[optind+1]) << endl;
-//
-//  } else if (comm == "run-list") {
-//    AssureNumPar(n_par, 2, "a dataset name");
-//    vector<int> list_run;
-//    svr->ListRun(argv[optind+1], &list_run);
-//    for (auto it = list_run.begin(); it != list_run.end(); it++) cout << *it << endl;
-//
   return 0;
 }
 

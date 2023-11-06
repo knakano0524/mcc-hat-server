@@ -3,21 +3,20 @@
 Program to control MCC HAT via the TCP/IP socket communication.
 
 
-## Installation
+## Building & Testing
 
 ```
 source setup.sh
 cmake-this
 make-this
-sudo cp -a inst/bin/mcc-hat-server /usr/local/bin
+./build/mcc-hat-server -ivv
 ```
 
 
-## Registration to systemd
+## Installation & Registration to systemd
 
 ```
-sudo cp sudo cp -a etc/mcc-hat-server.service /etc/systemd/system
-sudo systemctl daemon-reload
+install-this
 sudo systemctl enable mcc-hat-server
 sudo systemctl start  mcc-hat-server
 sudo systemctl status mcc-hat-server

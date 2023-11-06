@@ -5,7 +5,7 @@
 #include <string>
 #include "MccHatBoard.h"
 
-/// Main user-interface class to access the E906 data catalog.
+/// Singleton class to manage all loaded boards.
 /**
  * To be written.
  */
@@ -32,9 +32,6 @@ class MccHatServer {
 
   int InitBoards(const bool close_first=true);
   int CloseBoards();
-  //int EnableBoard (const unsigned int board);
-  //int DisableBoard(const unsigned int board);
-  //int DisableAll();
   MccHatBoard* GetBoard(const unsigned int board);
 
   bool IsReady(const unsigned int board, std::ostream* os=0);
