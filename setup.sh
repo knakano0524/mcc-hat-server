@@ -40,7 +40,7 @@ function install-this {
 	echo "Stopping the server via systemd..."
 	sudo systemctl stop mcc-hat-server
     fi
-    echo "Copying `mcc-hat-server` to `/usr/local/bin`..."
+    echo "Copying 'mcc-hat-server' to '/usr/local/bin'..."
     sudo cp -a $DIR_TOP/build/mcc-hat-server /usr/local/bin
     if [ $ACTIVE = 'active' ] ; then
 	echo "Starting the server via systemd..."
